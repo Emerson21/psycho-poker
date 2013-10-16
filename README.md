@@ -1,13 +1,20 @@
 psycho-poker
 ============
 
-Cada jogador recebe 5 cartas e pode vê-las. O jogador pode então descartar entre 0 e 5 das suas cartas e trocá-las pelo mesmo número de cartas a partir do topo do monte. O objetivo é maximizar o valor final da mão do jogador.
+Cada jogador recebe 5 cartas e pode vê-las. 
+O jogador pode então descartar entre 0 e 5 das suas cartas e trocá-las pelo mesmo número de cartas a partir do topo do monte. 
+O objetivo é maximizar o valor final da mão do jogador.
 
-As cartas do monte estão viradas para baixo, e normalmente não é possível saber a ordem das cartas. Vamos imaginar que o nosso jogador é um paranormal e que ele consiga saber as próximas 5 cartas do monte. Faça um código que ajude o jogador a descartar e trocar as cartas de forma a maximizar sua mão.
+As cartas do monte estão viradas para baixo, e normalmente não é possível saber a ordem das cartas. 
+Vamos imaginar que o nosso jogador é um paranormal e que ele consiga saber as próximas 5 cartas do monte. 
+Faça um código que ajude o jogador a descartar e trocar as cartas de forma a maximizar sua mão.
 
 ## Entradas e saídas
 
-A entrada será uma série de linhas, cada linha contendo as 5 cartas na mão do jogador e depois as 5 cartas do topo do monte. Cada carta será representada por 2 caracteres: o primeiro é o valor da carta (A=ás, 0-9, T=10, J=Valete, Q=Dama, K=Rei) e o segundo valor é o naipe (C=Paus, D=Ouro, S=Espada, H=Copas). As cartas serão separadas por espaço e cada linha será de um único baralho válido. Logo, não haverá cartas duplicadas entre a mão e o monte.
+A entrada será uma série de linhas, cada linha contendo as 5 cartas na mão do jogador e depois as 5 cartas do topo do monte. 
+Cada carta será representada por 2 caracteres: 
+o primeiro é o valor da carta (A=ás, 0-9, T=10, J=Valete, Q=Dama, K=Rei) e o segundo valor é o naipe (C=Paus, D=Ouro, S=Espada, H=Copas). 
+As cartas serão separadas por espaço e cada linha será de um único baralho válido. Logo, não haverá cartas duplicadas entre a mão e o monte.
 
 Cada linha de entrada deve produzir uma linha de saída com a mão inicial, as 5 cartas do monte e a melhor mão possível.
 
