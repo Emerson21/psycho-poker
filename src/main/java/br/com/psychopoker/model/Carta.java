@@ -1,5 +1,6 @@
 package br.com.psychopoker.model;
 
+
 public class Carta {
 	
 	private Naipe naipe;
@@ -27,25 +28,25 @@ public class Carta {
 		this.valor = valor;
 	}
 
-	private enum Valor {
-		A("Ás"), DIGIT("0-9"), T("10"), J("Valete"), Q("Dama"), K("Rei");
-		
-		private String descricao;
-		
-		private Valor (String descricao) {
-			this.descricao = descricao;
-		}
-		
+	@Override
+	public String toString() {
+		return this.valor.name().concat(naipe.name());
 	}
 	
-	private enum Naipe {
-		C("Paus"), D("Ouro"), S("Espada"), H("Copas");
+	
+	public enum Naipe {
+		C ("Paus"), D ("Ouro"), S ("Espada"), H ("Copas");
 		
 		private String descricao;
 		
 		private Naipe(String descricao) {
 			this.descricao = descricao;
 		}
+		
+		public String getDescricao() {
+			return this.descricao;
+		}
 	}
+	
 	
 }

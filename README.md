@@ -13,12 +13,13 @@ Faça um código que ajude o jogador a descartar e trocar as cartas de forma a m
 
 A entrada será uma série de linhas, cada linha contendo as 5 cartas na mão do jogador e depois as 5 cartas do topo do monte. 
 Cada carta será representada por 2 caracteres: 
-o primeiro é o valor da carta (A=ás, 0-9, T=10, J=Valete, Q=Dama, K=Rei) e o segundo valor é o naipe (C=Paus, D=Ouro, S=Espada, H=Copas). 
+o primeiro é o valor da carta (A=ás, 2-9, T=10, J=Valete, Q=Dama, K=Rei) e o segundo valor é o naipe (C=Paus, D=Ouro, S=Espada, H=Copas). 
 As cartas serão separadas por espaço e cada linha será de um único baralho válido. Logo, não haverá cartas duplicadas entre a mão e o monte.
 
 Cada linha de entrada deve produzir uma linha de saída com a mão inicial, as 5 cartas do monte e a melhor mão possível.
 
-A ordem das cartas na mão do jogador é irrelevante mas a ordem das cartas no monte são importantes, pois cada carta só pode ser trocada com carta no topo do monte.
+A ordem das cartas na mão do jogador é irrelevante mas a ordem das cartas no monte são importantes, 
+pois cada carta só pode ser trocada com carta no topo do monte.
 
 ## Exemplos de entrada
  
