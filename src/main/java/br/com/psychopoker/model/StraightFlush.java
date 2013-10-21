@@ -12,10 +12,10 @@ import br.com.psychopoker.model.Carta.Naipe;
 public class StraightFlush extends MelhorMao {
 	
 	public boolean matches(Monte monte) {
-		List<Carta> maoJogador = monte.getCartasJogador();
+		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
 		List<Carta> cartasMonte = monte.getCartasMonte();
 		
-		Collections.sort(monte.getCartasJogador(), new Comparator<Carta>() {
+		Collections.sort(maoJogador, new Comparator<Carta>() {
 			@Override
 			public int compare(Carta carta1, Carta carta2) {
 				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
