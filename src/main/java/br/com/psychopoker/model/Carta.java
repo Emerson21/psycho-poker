@@ -30,22 +30,12 @@ public class Carta {
 
 	@Override
 	public String toString() {
-		return this.valor.name().concat(naipe.name());
+		return this.valor.getDescricao().concat(naipe.name());
 	}
 	
 	
 	public enum Naipe {
-		C ("Paus"), D ("Ouro"), S ("Espada"), H ("Copas");
-		
-		private String descricao;
-		
-		private Naipe(String descricao) {
-			this.descricao = descricao;
-		}
-		
-		public String getDescricao() {
-			return this.descricao;
-		}
+		C , D , S , H ;
 	}
 	
 	

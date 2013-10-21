@@ -14,7 +14,6 @@ public class MelhorMaoTest {
 		MelhorMao straightFlush = MelhorMao.resolver(new Monte(entrada)); 
 		
 		Assert.assertTrue(straightFlush instanceof StraightFlush);
-		System.out.println("");
 	}
 	
 }
