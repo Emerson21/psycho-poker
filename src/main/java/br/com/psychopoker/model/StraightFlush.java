@@ -9,8 +9,9 @@ import br.com.psychopoker.MelhorMao;
 import br.com.psychopoker.model.Carta.Naipe;
 
 
-public class StraightFlush extends MelhorMao {
+public class StraightFlush implements MelhorMao {
 	
+	@Override
 	public boolean matches(Monte monte) {
 		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
 		List<Carta> cartasMonte = monte.getCartasMonte();
