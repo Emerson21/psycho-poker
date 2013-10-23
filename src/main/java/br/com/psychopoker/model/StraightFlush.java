@@ -11,8 +11,14 @@ import br.com.psychopoker.model.Carta.Naipe;
 
 public class StraightFlush implements MelhorMao {
 	
+	private Monte monte;
+	
+	public StraightFlush(Monte monte) {
+		this.monte = monte;
+	}
+	
 	@Override
-	public boolean matches(Monte monte) {
+	public boolean matches() {
 		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
 		List<Carta> cartasMonte = monte.getCartasMonte();
 		
@@ -49,8 +55,7 @@ public class StraightFlush implements MelhorMao {
 			}
 		});
 
-		
-		return isSequence(straight) && isSameNaipe(straight) ? Boolean.TRUE :Boolean.FALSE; 
+		return isSequence(straight) && isSameNaipe(straight) ? Boolean.TRUE : Boolean.FALSE; 
 		
 	}
 
