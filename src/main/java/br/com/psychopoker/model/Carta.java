@@ -1,6 +1,7 @@
 package br.com.psychopoker.model;
 
 
+
 public class Carta {
 	
 	private Naipe naipe;
@@ -33,10 +34,19 @@ public class Carta {
 		return this.valor.getDescricao().concat(naipe.name());
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		Carta carta = (Carta) obj;
+		return this.valor == carta.getValor();
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.valor.hashCode();
+	}
 	
 	public enum Naipe {
 		C , D , S , H ;
 	}
-	
 	
 }
