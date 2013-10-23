@@ -6,8 +6,19 @@ import java.util.Map;
 
 public enum Valor {
 
-	DOIS(2L, "2"), TRES(3L, "3"), QUATRO(4L, "4"), CINCO(5L,"5"), SEIS(6L, "6"), SETE(7L, "7"), OITO(8L, "8"), 
-	NOVE(9L, "9"), T (10L, "T"), J(11L, "J"), Q (12L, "Q"), K (13L, "K"), A(14L, "A");
+	A(14L, "A"),
+	K(13L, "K"), 
+	Q(12L, "Q"), 
+	J(11L, "J"), 
+	T(10L, "T"), 
+	NOVE(9L, "9"), 
+	OITO(8L, "8"), 
+	SETE(7L, "7"), 
+	SEIS(6L, "6"), 
+	CINCO(5L,"5"), 
+	QUATRO(4L, "4"), 
+	TRES(3L, "3"), 
+	DOIS(2L, "2"); 
 	
 	private static Map<Long, Valor> mapValor = new HashMap<Long, Valor>();
 	
