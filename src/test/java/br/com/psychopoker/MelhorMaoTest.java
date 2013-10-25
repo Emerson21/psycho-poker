@@ -38,7 +38,7 @@ public class MelhorMaoTest {
 	
 	@Test
 	public void straight() throws Exception {
-		Monte monte = new Monte("AC 2D 9C 3S KD 5S 4D KS AS 4C");
+		Monte monte = new Monte("AC QS 9C 3S KD JD TS 2D AS 4C");
 		Assert.assertTrue(new Straight(monte).matches());
 	}
 	
