@@ -9,17 +9,19 @@ import br.com.psychopoker.model.FullHouse;
 import br.com.psychopoker.model.Monte;
 import br.com.psychopoker.model.Straight;
 import br.com.psychopoker.model.StraightFlush;
+import br.com.psychopoker.model.ThreeOfAKind;
+import br.com.psychopoker.model.TwoPairs;
 
 public class MelhorMaoTest {
 	
 	@Test
-	public void combinacaoStraightFlush() throws Exception {
+	public void straightFlush() throws Exception {
 		Monte monte = new Monte("TH JH QC QD QS QH KH AH 2S 6S");
 		Assert.assertTrue(new StraightFlush(monte).matches());
 	}
 	
 	@Test
-	public void melhorMaoFourOfAKind() throws Exception {
+	public void fourOfAKind() throws Exception {
 		Monte monte = new Monte("2H 2S 3H 3S 3C 2D 3D 6C 9C TH");
 		Assert.assertTrue(new FourOfAKind(monte).matches());
 	}
@@ -40,6 +42,24 @@ public class MelhorMaoTest {
 	public void straight() throws Exception {
 		Monte monte = new Monte("AC QS 9C 3S KD JD TS 2D AS 4C");
 		Assert.assertTrue(new Straight(monte).matches());
+	}
+	
+	@Test
+	public void threeOfAKind() throws Exception {
+		Monte monte = new Monte("KS AH 2H 3C 4H KC 2C TC 2D AS");
+		Assert.assertTrue(new ThreeOfAKind(monte).matches());
+	}
+
+	@Test
+	public void twoPair() throws Exception {
+		Monte monte = new Monte("AH 2C 9S AD 3C QH KS JS JD KD");
+		Assert.assertTrue(new TwoPairs(monte).matches());
+	}
+
+	@Test
+	public void pair() throws Exception {
+		Monte monte = new Monte("AH 2C 9S AD 3C QH KS JS JD KD");
+		Assert.assertTrue(new TwoPairs(monte).matches());
 	}
 	
 }

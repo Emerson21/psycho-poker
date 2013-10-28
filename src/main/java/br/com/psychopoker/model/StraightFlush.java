@@ -19,59 +19,87 @@ public class StraightFlush implements MelhorMao {
 	
 	@Override
 	public boolean matches() {
-		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
-		List<Carta> cartasMonte = monte.getCartasMonte();
 		
+		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
+		List<Carta> cartasMonte = new ArrayList<Carta>(monte.getCartasMonte());
+		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
+		
+		ordenaLista(maoJogador);
+		
+		if (isSequence(maoJogador)) return true;
+		if (isSequence(cartasMonte)) return true;
+		
+		List<Carta> cartasASeremTrocadas = new ArrayList<Carta>();
+		for (int a = 0; a < cartasMonte.size(); a++) {
+			cartasASeremTrocadas.add(cartasMonte.get(a));
+			
+			for (int b = 0; b < (maoJogador.size() - a); b++) {
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				adicionaCartas(b, maoJogador, cartasASeremTrocadas, cartasASeremTrocadas.size());
+				if (isSequence(maoJogador) && isSameNaipe(maoJogador)) return true;
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	private void adicionaCartas(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(count));
+			++index;
+			++count;
+		}
+		
+	}
+
+	private void voltaListaNormal(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(index));
+			++index;
+			++count;
+		}
+		
+	}
+	
+	private static void ordenaLista(List<Carta> maoJogador) {
 		Collections.sort(maoJogador, new Comparator<Carta>() {
 			@Override
 			public int compare(Carta carta1, Carta carta2) {
 				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
 			}
 		});
-
-		
-		if (isSequence(maoJogador) && isSameNaipe(maoJogador)) return Boolean.TRUE;
-		if (isSequence(cartasMonte) && isSameNaipe(cartasMonte)) return Boolean.TRUE;
-		
-		List<Carta> straight = new ArrayList<Carta>();
-		
-		for (int i = 0; i < maoJogador.size(); i++) {
-			for(int x = i+1; x < maoJogador.size(); x++) {
-				if (maoJogador.get(i).getNaipe() == maoJogador.get(x).getNaipe()) {
-					straight.add(maoJogador.get(i));
-					straight.add(maoJogador.get(x));
-				}
-			}
+	}
+	
+	private void removeCartas(int index, List<Carta> maoJogador, int loops) {	
+		int count = 0;
+		while (count < loops) {
+			maoJogador.remove(index);
+			++count;
 		}
-		int loops = cartasMonte.size() - straight.size();
-		for (int i = 0; i < loops; i++) {
-			straight.add(cartasMonte.get(i));
-		}
-		
-		Collections.sort(straight, new Comparator<Carta>() {
-			@Override
-			public int compare(Carta carta1, Carta carta2) {
-				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
-			}
-		});
-
-		return isSequence(straight) && isSameNaipe(straight) ? Boolean.TRUE : Boolean.FALSE; 
 		
 	}
 
-	private static boolean isSequence(List<Carta> maoJogador) {
+	private static boolean isSequence(List<Carta> lista) {
 		boolean isSequence = false;
-		
-		for (int i = 0; i < maoJogador.size(); i++) {
-			for (int x = i+1; x < maoJogador.size(); x++) {
-				isSequence = (maoJogador.get(i).getValor().getPeso() - maoJogador.get(x).getValor().getPeso()) == 1;
-				i++;
+		List<Carta> listaOrdenada = new ArrayList<Carta>(lista);
+		ordenaLista(listaOrdenada);
+		outter:
+		for (int loop = 0; loop < listaOrdenada.size(); loop++) {
+			for (int x = 1; x < listaOrdenada.size(); x++) {
+				isSequence = (listaOrdenada.get(loop).getValor().getPeso() - listaOrdenada.get(x).getValor().getPeso() == 1);
+				if (!isSequence) break outter;
+				++loop;
 			}
 		}
 		
 		return isSequence;
 	}
-	
+
 	private static boolean isSameNaipe(List<Carta> maoJogador) {
 		boolean isSameNaipe = false;
 		Naipe naipe = maoJogador.get(0).getNaipe();
