@@ -2,10 +2,8 @@ package br.com.psychopoker.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.PredicateUtils;
@@ -17,6 +15,7 @@ import br.com.psychopoker.util.CollectionUtil;
 public class Flush implements MelhorMao{
 
 	private static final int CINCO = 5;
+	private List<Naipe> naipes = new ArrayList<Carta.Naipe>();
 	
 	private Monte monte;
 	
@@ -26,36 +25,80 @@ public class Flush implements MelhorMao{
 	
 	@Override
 	public boolean matches() {
-		List<Naipe> naipes = new ArrayList<Carta.Naipe>();
-		Naipe naipe = Naipe.C;
 		
-		for (int loop = 0; loop < monte.getCartasJogador().size(); loop++) {
-			naipes.add(monte.getCartasJogador().get(loop).getNaipe());
-		}
+		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
+		List<Carta> cartasMonte = new ArrayList<Carta>(monte.getCartasMonte());
+		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
 		
-		Set<Naipe> setNaipes = new HashSet<Carta.Naipe>(naipes);
-		Iterator<Naipe> iterator = setNaipes.iterator();
-		int frequencia = 0;
-		while (iterator.hasNext()) {
-			Naipe naipeAtual = iterator.next();
-			int frequenciaNaipe = Collections.frequency(naipes, naipeAtual);
-			if (frequenciaNaipe > frequencia) {
-				frequencia = frequenciaNaipe;
-				naipe = naipeAtual;
+		ordenaLista(trocas);
+		ordenaLista(maoJogador);
+		
+		if (isFlush(maoJogador)) return true;
+		
+		List<Carta> cartasASeremTrocadas = new ArrayList<Carta>();
+		for (int a = 0; a < cartasMonte.size(); a++) {
+			cartasASeremTrocadas.add(cartasMonte.get(a));
+			
+			for (int b = 0; b < (maoJogador.size() - a); b++) {
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				adicionaCartas(b, maoJogador, cartasASeremTrocadas, cartasASeremTrocadas.size());
+				if (isFlush(maoJogador)) return true;
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
 			}
+			
 		}
 		
-		filtrar(naipes, naipe);
+		return false;
+	}
+	
+	private boolean isFlush(List<Carta> maoJogador) {
+		for (int i = 0; i < maoJogador.size(); i++) {
+			naipes.add(maoJogador.get(i).getNaipe());
+			filtrar(naipes, maoJogador.get(i).getNaipe());
+			
+		}
+		if (naipes.size() != CINCO) naipes = new ArrayList<Naipe>();
 		
-		if (naipes.size() == CINCO) return true;
-		
-		for (int loop = 0; loop < (monte.getCartasMonte().size() - frequencia); loop++) {
-			naipes.add(monte.getCartasMonte().get(loop).getNaipe());
+		return !naipes.isEmpty();
+	}
+
+	private void adicionaCartas(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(count));
+			++index;
+			++count;
 		}
 		
-		filtrar(naipes, naipe);
+	}
+
+	private void voltaListaNormal(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(index));
+			++index;
+			++count;
+		}
 		
-		return naipes.size() == CINCO;
+	}
+	
+	private static void ordenaLista(List<Carta> maoJogador) {
+		Collections.sort(maoJogador, new Comparator<Carta>() {
+			@Override
+			public int compare(Carta carta1, Carta carta2) {
+				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
+			}
+		});
+	}
+	
+	private void removeCartas(int index, List<Carta> maoJogador, int loops) {	
+		int count = 0;
+		while (count < loops) {
+			maoJogador.remove(index);
+			++count;
+		}
+		
 	}
 
 	private void filtrar(List<Naipe> naipes, Naipe naipe) {
