@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import br.com.psychopoker.MelhorMao;
+import br.com.psychopoker.util.CollectionUtil;
 
 public class TwoPairs implements MelhorMao {
 
@@ -95,5 +96,11 @@ public class TwoPairs implements MelhorMao {
 		}
 		
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: two-pairs (2 pares) ");
+	}
+	
 }

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import br.com.psychopoker.MelhorMao;
+import br.com.psychopoker.util.CollectionUtil;
 
 public class ThreeOfAKind implements MelhorMao{
 
@@ -87,6 +88,12 @@ public class ThreeOfAKind implements MelhorMao{
 				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
 			}
 		});
+	}
+	
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: three-of-a-kind (trinca) ");
 	}
 	
 }

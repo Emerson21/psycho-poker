@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import br.com.psychopoker.MelhorMao;
+import br.com.psychopoker.util.CollectionUtil;
 
 public class HighestCard implements MelhorMao {
 
@@ -24,7 +25,7 @@ public class HighestCard implements MelhorMao {
 		
 		ordenaLista(maoJogador);
 		
-		if (isHighestDeck(maoJogador)) return true;
+		if (isHighestCard(maoJogador)) return true;
 		
 		List<Carta> cartasASeremTrocadas = new ArrayList<Carta>();
 		for (int a = 0; a < cartasMonte.size(); a++) {
@@ -33,7 +34,7 @@ public class HighestCard implements MelhorMao {
 			for (int b = 0; b < (maoJogador.size() - a); b++) {
 				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
 				adicionaCartas(b, maoJogador, cartasASeremTrocadas, cartasASeremTrocadas.size());
-				if (isHighestDeck(maoJogador)) return true;
+				if (isHighestCard(maoJogador)) return true;
 				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
 				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
 			}
@@ -43,7 +44,7 @@ public class HighestCard implements MelhorMao {
 		return false;
 	}
 	
-	private boolean isHighestDeck(List<Carta> maoJogador) {
+	private boolean isHighestCard(List<Carta> maoJogador) {
 		for (int i = 0; i < maoJogador.size(); i++) {
 			if (Collections.frequency(maoJogador, maoJogador.get(i)) == 2) return false;
 		}
@@ -89,4 +90,10 @@ public class HighestCard implements MelhorMao {
 		
 	}
 
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: highest-card (maior carta)  ");
+	}
+	
 }

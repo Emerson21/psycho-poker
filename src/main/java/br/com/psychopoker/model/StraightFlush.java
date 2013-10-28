@@ -7,6 +7,7 @@ import java.util.List;
 
 import br.com.psychopoker.MelhorMao;
 import br.com.psychopoker.model.Carta.Naipe;
+import br.com.psychopoker.util.CollectionUtil;
 
 
 public class StraightFlush implements MelhorMao {
@@ -108,6 +109,12 @@ public class StraightFlush implements MelhorMao {
 		}
 		
 		return isSameNaipe;
+	}
+	
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: straight-flush (sequência numérica e de naipe) ");
 	}
 
 }

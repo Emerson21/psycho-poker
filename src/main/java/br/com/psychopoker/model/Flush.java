@@ -12,6 +12,7 @@ import org.apache.commons.collections.PredicateUtils;
 
 import br.com.psychopoker.MelhorMao;
 import br.com.psychopoker.model.Carta.Naipe;
+import br.com.psychopoker.util.CollectionUtil;
 
 public class Flush implements MelhorMao{
 
@@ -61,4 +62,10 @@ public class Flush implements MelhorMao{
 		CollectionUtils.filter(naipes, PredicateUtils.equalPredicate(naipe));
 	}
 
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: flush (sequência de naipe) ");
+	}
+	
 }
