@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import br.com.psychopoker.MelhorMao;
+import br.com.psychopoker.util.CollectionUtil;
 
 public class Straight implements MelhorMao {
 
@@ -96,6 +97,12 @@ public class Straight implements MelhorMao {
 		}
 		
 		return isSequence;
+	}
+	
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: straight (sequência numérica) ");
 	}
 	
 }
