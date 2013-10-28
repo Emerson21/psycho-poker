@@ -2,61 +2,101 @@ package br.com.psychopoker.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.PredicateUtils;
 
 import br.com.psychopoker.MelhorMao;
+import br.com.psychopoker.util.CollectionUtil;
 
 public class FourOfAKind implements MelhorMao {
 
-	private static final int FOUR_OF_A_KIND = 4;
+	private static final int FOUR = 4;
+	
 	private Monte monte;
 	
 	public FourOfAKind(Monte monte) {
 		this.monte = monte;
 	}
 	
-	//TODO ter a possibilidade de trocar todas as cartas
 	@Override
 	public boolean matches() {
+		
 		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
-
-		Set<Carta> s = new HashSet<Carta>();//TODO Refactoring - instanciar já passando a collection
-		for (Carta carta : maoJogador) {
-			s.add(carta);
-		}
-		
-		List<Carta> cartaComMaiorFrequencia = new ArrayList<Carta>();
-		
-		Iterator<Carta> it = s.iterator();
-		int frequency = 0;
-		while (it.hasNext()) {
-			Carta carta = it.next();
-			int frequenciaCarta = Collections.frequency(maoJogador , carta);
-			if (frequenciaCarta > frequency) {
-				if (!cartaComMaiorFrequencia.isEmpty()){
-					cartaComMaiorFrequencia.remove(0);
-				}
-
-				cartaComMaiorFrequencia.add(carta);
-				frequency = frequenciaCarta;
-			}
-		}
-		
-		Carta carta = cartaComMaiorFrequencia.get(0);
-		
 		List<Carta> cartasMonte = new ArrayList<Carta>(monte.getCartasMonte());
-		CollectionUtils.filter(maoJogador, PredicateUtils.equalPredicate(carta));
+		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
 		
-		for (int loop = 0; loop < (cartasMonte.size() - frequency); loop++) {
-			maoJogador.add(cartasMonte.get(loop));
+		ordenaLista(trocas);
+		ordenaLista(maoJogador);
+		
+		if (isFourOfAKind(maoJogador)) return true;
+		
+		List<Carta> cartasASeremTrocadas = new ArrayList<Carta>();
+		for (int a = 0; a < cartasMonte.size(); a++) {
+			cartasASeremTrocadas.add(cartasMonte.get(a));
+			
+			for (int b = 0; b < (maoJogador.size() - a); b++) {
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				adicionaCartas(b, maoJogador, cartasASeremTrocadas, cartasASeremTrocadas.size());
+				if (isFourOfAKind(maoJogador)) return true;
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
+			}
+			
 		}
 		
-		return Collections.frequency(maoJogador, carta) == FOUR_OF_A_KIND;
+		return false;
 	}
+	
+	private boolean isFourOfAKind(List<Carta> maoJogador) {
+		for (int i = 0; i < maoJogador.size(); i++) {
+			if (Collections.frequency(maoJogador, maoJogador.get(i)) == FOUR) return true;
+		}
+		
+		return false;
+	}
+
+	private void adicionaCartas(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(count));
+			++index;
+			++count;
+		}
+		
+	}
+
+	private void voltaListaNormal(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(index));
+			++index;
+			++count;
+		}
+		
+	}
+	
+	private static void ordenaLista(List<Carta> maoJogador) {
+		Collections.sort(maoJogador, new Comparator<Carta>() {
+			@Override
+			public int compare(Carta carta1, Carta carta2) {
+				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
+			}
+		});
+	}
+	
+	private void removeCartas(int index, List<Carta> maoJogador, int loops) {	
+		int count = 0;
+		while (count < loops) {
+			maoJogador.remove(index);
+			++count;
+		}
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: four-of-a-kind (quadra)");
+	}
+	
 }
