@@ -2,16 +2,13 @@ package br.com.psychopoker.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.collections.PredicateUtils;
-
 import br.com.psychopoker.MelhorMao;
+import br.com.psychopoker.util.CollectionUtil;
 
 public class FullHouse implements MelhorMao {
 	
@@ -19,77 +16,99 @@ public class FullHouse implements MelhorMao {
 	private static final int DOIS = 2;
 	
 	private Monte monte;
-	private List<Carta> cartasMonte;
-	private List<Carta> trinca = new ArrayList<Carta>();
-	private List<Carta> par = new ArrayList<Carta>();
+	private Set<Carta> fullHouse = new HashSet<Carta>();
 	
 	public FullHouse(Monte monte) {
 		this.monte = monte;
-		cartasMonte = new ArrayList<Carta>(monte.getCartasMonte());
 	}
 	
 	@Override
 	public boolean matches() {
+
+		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
+		List<Carta> cartasMonte = new ArrayList<Carta>(monte.getCartasMonte());
+		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
 		
-		resolve(new ArrayList<Carta>(monte.getCartasJogador()));
+		ordenaLista(trocas);
+		ordenaLista(maoJogador);
 		
-		if (trinca.size() == TRES && par.size() == DOIS) return true;
+		if (isFullHouse(maoJogador)) return true;
 		
-		if (trinca.size() == TRES) {
-			for (int loop = 0; loop < DOIS; loop++) {
-				trinca.add(cartasMonte.get(loop));
+		List<Carta> cartasASeremTrocadas = new ArrayList<Carta>();
+		for (int a = 0; a < cartasMonte.size(); a++) {
+			cartasASeremTrocadas.add(cartasMonte.get(a));
+			
+			for (int b = 0; b < (maoJogador.size() - a); b++) {
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				adicionaCartas(b, maoJogador, cartasASeremTrocadas, cartasASeremTrocadas.size());
+				if (isFullHouse(maoJogador)) return true;
+				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
+				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
 			}
 			
-			@SuppressWarnings("unchecked")
-			List<Carta> select = (List<Carta>) CollectionUtils.selectRejected(trinca, PredicateUtils.equalPredicate(trinca.get(0)));
-			for (Carta carta : select) {
-				return isPar(select, carta);
-			}
-			
-		} else if (par.size() == DOIS) {
-			for (int loop = 0; loop < TRES; loop++) {
-				par.add(cartasMonte.get(loop));
-			}
-			
-			@SuppressWarnings("unchecked")
-			List<Carta> select = (List<Carta>) CollectionUtils.selectRejected(par, PredicateUtils.equalPredicate(par.get(0)));
-			for (Carta carta : select) {
-				return isTrinca(select, carta);
-			}
-			
-		} else {
-			resolve(cartasMonte);
-			return trinca.size() == TRES && par.size() == DOIS;
 		}
 		
 		return false;
 	}
-
-	private void resolve(List<Carta> lista) {
-		Set<Carta> set = new HashSet<Carta>(lista);
-		Iterator<Carta> iterator = set.iterator();
-		while (iterator.hasNext()) {
-			Carta carta = (Carta) iterator.next();
-			
-			if (isTrinca(lista, carta)) {
-				trinca = new ArrayList<Carta>(lista);
-				Predicate predicate = PredicateUtils.equalPredicate(carta);
-				CollectionUtils.filter(trinca, predicate);
-				
-			} else if (isPar(lista, carta)) {
-				par = new ArrayList<Carta>(lista);
-				Predicate predicate = PredicateUtils.equalPredicate(carta);
-				CollectionUtils.filter(par, predicate);
+	
+	public boolean isFullHouse(List<Carta> maoJogador) {
+		for (int i = 0; i < maoJogador.size(); i++) {
+			if (Collections.frequency(maoJogador, maoJogador.get(i)) == TRES){
+				fullHouse.add(maoJogador.get(i));
 			}
-		}		
+
+			if (Collections.frequency(maoJogador, maoJogador.get(i)) == DOIS){
+				fullHouse.add(maoJogador.get(i));
+			}
+		}
+		
+		if (fullHouse.size() != DOIS) fullHouse = new HashSet<Carta>();
+		
+		return !fullHouse.isEmpty();
 	}
 
-	private boolean isPar(List<Carta> lista, Carta carta) {
-		return Collections.frequency(lista, carta) == DOIS;
+	private void adicionaCartas(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(count));
+			++index;
+			++count;
+		}
+		
 	}
 
-	private boolean isTrinca(List<Carta> lista, Carta carta) {
-		return Collections.frequency(lista, carta) == TRES;
+	private void voltaListaNormal(int index, List<Carta> collection, List<Carta> troca, int loops) {
+		int count = 0;
+		while (count < loops) {
+			collection.add(index, troca.get(index));
+			++index;
+			++count;
+		}
+		
+	}
+	
+	private void removeCartas(int index, List<Carta> maoJogador, int loops) {	
+		int count = 0;
+		while (count < loops) {
+			maoJogador.remove(index);
+			++count;
+		}
+		
 	}
 
+	private static void ordenaLista(List<Carta> maoJogador) {
+		Collections.sort(maoJogador, new Comparator<Carta>() {
+			@Override
+			public int compare(Carta carta1, Carta carta2) {
+				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
+			}
+		});
+	}
+	
+	@Override
+	public String toString() {
+		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
+				.concat(" Melhor Jogo: full-house (trinca + par) ");
+	}
+	
 }
