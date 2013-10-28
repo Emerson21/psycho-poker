@@ -50,7 +50,6 @@ public class TwoPairs implements MelhorMao {
 	private boolean isTwoPair(List<Carta> maoJogador) {
 		for (int i = 0; i < maoJogador.size(); i++) {
 			if (Collections.frequency(maoJogador, maoJogador.get(i)) == 2) {
-				System.out.println(maoJogador.get(i));
 				twoPair.add(maoJogador.get(i));
 			}
 		}

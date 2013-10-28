@@ -6,7 +6,9 @@ import org.junit.Test;
 import br.com.psychopoker.model.Flush;
 import br.com.psychopoker.model.FourOfAKind;
 import br.com.psychopoker.model.FullHouse;
+import br.com.psychopoker.model.HighestCard;
 import br.com.psychopoker.model.Monte;
+import br.com.psychopoker.model.OnePair;
 import br.com.psychopoker.model.Straight;
 import br.com.psychopoker.model.StraightFlush;
 import br.com.psychopoker.model.ThreeOfAKind;
@@ -58,8 +60,13 @@ public class MelhorMaoTest {
 
 	@Test
 	public void pair() throws Exception {
-		Monte monte = new Monte("AH 2C 9S AD 3C QH KS JS JD KD");
-		Assert.assertTrue(new TwoPairs(monte).matches());
+		Monte monte = new Monte("6C 9C 8C 2D 7C 2H TC 4C 9S AH");
+		Assert.assertTrue(new OnePair(monte).matches());
 	}
 	
+	@Test
+	public void highestCard() throws Exception {
+		Monte monte = new Monte("3D 5S 2H QD TD 6S KH 9H AD QH");
+		Assert.assertTrue(new HighestCard(monte).matches());
+	}
 }
