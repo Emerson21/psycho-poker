@@ -10,6 +10,7 @@ import br.com.psychopoker.util.CollectionUtil;
 
 public class HighestCard implements MelhorMao {
 
+	private boolean highestCard = true;
 	private Monte monte;
 	
 	public HighestCard(Monte monte) {
@@ -24,8 +25,7 @@ public class HighestCard implements MelhorMao {
 		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
 		
 		ordenaLista(maoJogador);
-		
-		if (isHighestCard(maoJogador)) return true;
+		ordenaLista(trocas);
 		
 		List<Carta> cartasASeremTrocadas = new ArrayList<Carta>();
 		for (int a = 0; a < cartasMonte.size(); a++) {
@@ -34,22 +34,23 @@ public class HighestCard implements MelhorMao {
 			for (int b = 0; b < (maoJogador.size() - a); b++) {
 				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
 				adicionaCartas(b, maoJogador, cartasASeremTrocadas, cartasASeremTrocadas.size());
-				if (isHighestCard(maoJogador)) return true;
+				isHighestCard(maoJogador);
 				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
 				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
 			}
 			
 		}
 		
-		return false;
+		return highestCard;
 	}
 	
-	private boolean isHighestCard(List<Carta> maoJogador) {
+	private void isHighestCard(List<Carta> maoJogador) {
 		for (int i = 0; i < maoJogador.size(); i++) {
-			if (Collections.frequency(maoJogador, maoJogador.get(i)) == 2) return false;
+			if (Collections.frequency(maoJogador, maoJogador.get(i)) == 2){
+				highestCard = false;
+			} 
 		}
 		
-		return true;
 	}
 
 	private void adicionaCartas(int index, List<Carta> collection, List<Carta> troca, int loops) {

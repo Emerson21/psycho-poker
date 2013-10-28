@@ -2,7 +2,6 @@ package br.com.psychopoker.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import br.com.psychopoker.MelhorMao;
@@ -24,9 +23,6 @@ public class FourOfAKind implements MelhorMao {
 		List<Carta> maoJogador = new ArrayList<Carta>(monte.getCartasJogador());
 		List<Carta> cartasMonte = new ArrayList<Carta>(monte.getCartasMonte());
 		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
-		
-		ordenaLista(trocas);
-		ordenaLista(maoJogador);
 		
 		if (isFourOfAKind(maoJogador)) return true;
 		
@@ -73,15 +69,6 @@ public class FourOfAKind implements MelhorMao {
 			++count;
 		}
 		
-	}
-	
-	private static void ordenaLista(List<Carta> maoJogador) {
-		Collections.sort(maoJogador, new Comparator<Carta>() {
-			@Override
-			public int compare(Carta carta1, Carta carta2) {
-				return carta2.getValor().getPeso().compareTo(carta1.getValor().getPeso());
-			}
-		});
 	}
 	
 	private void removeCartas(int index, List<Carta> maoJogador, int loops) {	

@@ -3,9 +3,7 @@ package br.com.psychopoker.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import br.com.psychopoker.MelhorMao;
 import br.com.psychopoker.util.CollectionUtil;
@@ -16,7 +14,6 @@ public class FullHouse implements MelhorMao {
 	private static final int DOIS = 2;
 	
 	private Monte monte;
-	private Set<Carta> fullHouse = new HashSet<Carta>();
 	
 	public FullHouse(Monte monte) {
 		this.monte = monte;
@@ -52,19 +49,19 @@ public class FullHouse implements MelhorMao {
 	}
 	
 	public boolean isFullHouse(List<Carta> maoJogador) {
+		boolean trinca = false;
+		boolean pair = false;
 		for (int i = 0; i < maoJogador.size(); i++) {
 			if (Collections.frequency(maoJogador, maoJogador.get(i)) == TRES){
-				fullHouse.add(maoJogador.get(i));
+				trinca = true;
 			}
 
-			if (Collections.frequency(maoJogador, maoJogador.get(i)) == DOIS){
-				fullHouse.add(maoJogador.get(i));
+			if (Collections.frequency(maoJogador, maoJogador.get(i)) == DOIS) {
+				pair = true;
 			}
 		}
 		
-		if (fullHouse.size() != DOIS) fullHouse = new HashSet<Carta>();
-		
-		return !fullHouse.isEmpty();
+		return trinca && pair;
 	}
 
 	private void adicionaCartas(int index, List<Carta> collection, List<Carta> troca, int loops) {

@@ -24,6 +24,7 @@ public class Straight implements MelhorMao {
 		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
 		
 		ordenaLista(maoJogador);
+		ordenaLista(trocas);
 		
 		if (isSequence(maoJogador)) return true;
 		if (isSequence(cartasMonte)) return true;

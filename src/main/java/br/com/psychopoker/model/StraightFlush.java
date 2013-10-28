@@ -25,10 +25,7 @@ public class StraightFlush implements MelhorMao {
 		List<Carta> cartasMonte = new ArrayList<Carta>(monte.getCartasMonte());
 		List<Carta> trocas = new ArrayList<Carta>(monte.getCartasJogador());
 		
-		ordenaLista(maoJogador);
-		
 		if (isSequence(maoJogador)) return true;
-		if (isSequence(cartasMonte)) return true;
 		
 		List<Carta> cartasASeremTrocadas = new ArrayList<Carta>();
 		for (int a = 0; a < cartasMonte.size(); a++) {
@@ -41,9 +38,8 @@ public class StraightFlush implements MelhorMao {
 				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
 				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
 			}
-			
 		}
-		
+
 		return false;
 	}
 	
@@ -92,23 +88,24 @@ public class StraightFlush implements MelhorMao {
 		outter:
 		for (int loop = 0; loop < listaOrdenada.size(); loop++) {
 			for (int x = 1; x < listaOrdenada.size(); x++) {
-				isSequence = (listaOrdenada.get(loop).getValor().getPeso() - listaOrdenada.get(x).getValor().getPeso() == 1);
-				if (!isSequence) break outter;
+				if (listaOrdenada.get(loop).getValor().getPeso() - listaOrdenada.get(x).getValor().getPeso() != 1) {
+					break outter;
+				}
 				++loop;
 			}
+			isSequence = true;
 		}
 		
 		return isSequence;
 	}
 
 	private static boolean isSameNaipe(List<Carta> maoJogador) {
-		boolean isSameNaipe = false;
 		Naipe naipe = maoJogador.get(0).getNaipe();
 		for (int i = 1; i < maoJogador.size(); i++) {
-			isSameNaipe = naipe == maoJogador.get(i).getNaipe();
+		  if (naipe != maoJogador.get(i).getNaipe()) return false;
 		}
 		
-		return isSameNaipe;
+		return true;
 	}
 	
 	@Override

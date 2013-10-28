@@ -11,7 +11,8 @@ import br.com.psychopoker.MelhorMao;
 import br.com.psychopoker.util.CollectionUtil;
 
 public class OnePair implements MelhorMao {
-
+	
+	private String melhorMao = "";
 	private Monte monte;
 	private Set<Carta> pair = new HashSet<Carta>();
 	
@@ -38,7 +39,10 @@ public class OnePair implements MelhorMao {
 			for (int b = 0; b < (maoJogador.size() - a); b++) {
 				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
 				adicionaCartas(b, maoJogador, cartasASeremTrocadas, cartasASeremTrocadas.size());
-				if (isPair(maoJogador)) return true;
+				if (isPair(maoJogador)) {
+					this.melhorMao = CollectionUtil.join(maoJogador, " ");
+					return true;
+				}
 				removeCartas(b, maoJogador, cartasASeremTrocadas.size());
 				voltaListaNormal(b, maoJogador, trocas, cartasASeremTrocadas.size());
 			}
@@ -100,7 +104,7 @@ public class OnePair implements MelhorMao {
 	@Override
 	public String toString() {
 		return "Mão: ".concat(CollectionUtil.join(monte.getCartasJogador(), " ")) .concat(" Monte: ").concat(CollectionUtil.join(monte.getCartasMonte(), " "))
-				.concat(" Melhor Jogo: one-pair (1 par) ");
+				.concat(" Melhor Jogo: ( "+ melhorMao + " ) one-pair (1 par) ");
 	}
 	
 }
