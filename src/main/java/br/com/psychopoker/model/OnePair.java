@@ -51,7 +51,6 @@ public class OnePair implements MelhorMao {
 	private boolean isPair(List<Carta> maoJogador) {
 		for (int i = 0; i < maoJogador.size(); i++) {
 			if (Collections.frequency(maoJogador, maoJogador.get(i)) == 2) {
-				System.out.println(maoJogador.get(i));
 				pair.add(maoJogador.get(i));
 			}
 		}
